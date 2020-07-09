@@ -1,12 +1,16 @@
 /*
 GAME RULES:
-
 - The game has 2 players, playing in rounds
 - In each turn, a player rolls a dice as many times as he whishes. Each result get added to his ROUND score
 - BUT, if the player rolls a 1, all his ROUND score gets lost. After that, it's the next player's turn
 - The player can choose to 'Hold', which means that his ROUND score gets added to his GLBAL score. After that, it's the next player's turn
 - The first player to reach 100 points on GLOBAL score wins the game
 
+Three Challenges:
+1)  A player loses his entire score when he rolls two six in a row. Then, is the next player after that.
+2)  Add an input field to the HTML where the players can set the winning score by themselves,
+    so they can change the predefined score of 100.
+3)  Add a second dice to the game and in this scenario, the player loses his current score when only one of them is an one.
 */
 pigGame.Main = function () {
     'use strict';
@@ -23,13 +27,14 @@ pigGame.Main = function () {
         _sctrClsDice = '.dice',
         _clsWinner = 'winner',
         _clsActive = 'active';
-    let activePlayer, roundScore, score, gamePlaying;
+    let activePlayer, roundScore, score, gamePlaying, dice6Rolled;
 
     const _resetControls = function () {
         activePlayer = 0;
         roundScore = 0;
         score = [0, 0];
         gamePlaying = true;
+        dice6Rolled = false;
 
         document.querySelector(_sctrClsDice).style.display = 'none';
 
@@ -50,6 +55,7 @@ pigGame.Main = function () {
     const _nextPlayer = function () {
         activePlayer = activePlayer === 0 ? 1 : 0;
         roundScore = 0;
+        dice6Rolled = false;
 
         document.getElementById(_sctrIdCurrent0).textContent = roundScore;
         document.getElementById(_sctrIdCurrent1).textContent = roundScore;
@@ -69,6 +75,20 @@ pigGame.Main = function () {
             const diceDOM = document.querySelector(_sctrClsDice);
             diceDOM.style.display = 'block';
             diceDOM.src = `images/dice-${dice}.png`;
+
+            // Challenges 1: A player loses his entire score when he rolls two six in a row. Then, is the next player after that.
+            if (dice === 6) {
+                if (dice6Rolled) {
+                    roundScore = 0;
+                    score[activePlayer] = 0;
+                    document.querySelector(`#current-${activePlayer}`).textContent = roundScore;
+                    document.getElementById(`score-${activePlayer}`).innerText = score[activePlayer];
+
+                    _nextPlayer();
+                }
+                else
+                    dice6Rolled = true;
+            }
 
             // Update the score IF the rolled number is NOT a number 1
             if (dice !== 1) {
@@ -91,7 +111,7 @@ pigGame.Main = function () {
             document.getElementById(`score-${activePlayer}`).innerText = score[activePlayer];
 
             // Check if player won the match
-            if (score[activePlayer] >= 20) {
+            if (score[activePlayer] >= 100) {
                 const activePlayerPanel = `.player-${activePlayer}-panel`;
 
                 document.querySelector(_sctrClsDice).style.display = 'none';
