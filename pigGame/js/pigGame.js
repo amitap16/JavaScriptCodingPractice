@@ -29,6 +29,18 @@ pigGame.Main = function () {
         _clsActive = 'active';
     let activePlayer, roundScore, score, gamePlaying, dice6Rolled;
 
+    const _showHideDice = function (dice = 0) {
+        const diceDOM = document.querySelector(_sctrClsDice);
+
+        if (dice === 0) {
+            diceDOM.style.display = 'none';
+        }
+        else {
+            diceDOM.style.display = 'block';
+            diceDOM.src = `images/dice-${dice}.png`;
+        }
+    };
+
     const _resetControls = function () {
         activePlayer = 0;
         roundScore = 0;
@@ -36,12 +48,12 @@ pigGame.Main = function () {
         gamePlaying = true;
         dice6Rolled = false;
 
-        document.querySelector(_sctrClsDice).style.display = 'none';
+        _showHideDice();
 
-        document.getElementById(_sctrIdCurrent0).textContent = 0;
-        document.getElementById(_sctrIdCurrent1).textContent = 0;
-        document.getElementById(_sctrIdScore0).textContent = 0;
-        document.getElementById(_sctrIdScore1).textContent = 0;
+        document.getElementById(_sctrIdCurrent0).textContent = _sctrPostValue.Zero;
+        document.getElementById(_sctrIdCurrent1).textContent = _sctrPostValue.Zero;
+        document.getElementById(_sctrIdScore0).textContent = _sctrPostValue.Zero;
+        document.getElementById(_sctrIdScore1).textContent = _sctrPostValue.Zero;
         document.getElementById(_sctrIdName0).textContent = 'Player 1';
         document.getElementById(_sctrIdName1).textContent = 'Player 2';
 
@@ -63,7 +75,7 @@ pigGame.Main = function () {
         document.querySelector(_sctrClsPlayer0).classList.toggle(_clsActive);
         document.querySelector(_sctrClsPlayer1).classList.toggle(_clsActive);
 
-        document.querySelector(_sctrClsDice).style.display = 'none';
+        _showHideDice();
     };
 
     const _onRollDiceClick = function () {
@@ -72,9 +84,7 @@ pigGame.Main = function () {
             const dice = Math.floor(Math.random() * 6) + 1;
 
             // Display the result
-            const diceDOM = document.querySelector(_sctrClsDice);
-            diceDOM.style.display = 'block';
-            diceDOM.src = `images/dice-${dice}.png`;
+            _showHideDice(dice);
 
             // Challenges 1: A player loses his entire score when he rolls two six in a row. Then, is the next player after that.
             if (dice === 6) {
@@ -89,6 +99,8 @@ pigGame.Main = function () {
                 else
                     dice6Rolled = true;
             }
+            else
+                dice6Rolled = false;
 
             // Update the score IF the rolled number is NOT a number 1
             if (dice !== 1) {
@@ -114,7 +126,7 @@ pigGame.Main = function () {
             if (score[activePlayer] >= 100) {
                 const activePlayerPanel = `.player-${activePlayer}-panel`;
 
-                document.querySelector(_sctrClsDice).style.display = 'none';
+                _showHideDice();
                 document.getElementById(`name-${activePlayer}`).textContent = 'WINNER!!!';
                 document.querySelector(activePlayerPanel).classList.add(_clsWinner);
                 document.querySelector(activePlayerPanel).classList.remove(_clsActive);
