@@ -24,6 +24,7 @@ pigGame.Main = function () {
         _sctrIdName1 = `name-${_sctrPostValue.One}`,
         _sctrClsPlayer0 = `.player-${_sctrPostValue.Zero}-panel`,
         _sctrClsPlayer1 = `.player-${_sctrPostValue.One}-panel`,
+        _sctrlScore = 'winning-score',
         _sctrClsDice = '.dice',
         _clsWinner = 'winner',
         _clsActive = 'active';
@@ -123,7 +124,8 @@ pigGame.Main = function () {
             document.getElementById(`score-${activePlayer}`).innerText = score[activePlayer];
 
             // Check if player won the match
-            if (score[activePlayer] >= 100) {
+            const winScore = parseInt(document.getElementById(_sctrlScore).value);
+            if (score[activePlayer] >= winScore) {
                 const activePlayerPanel = `.player-${activePlayer}-panel`;
 
                 _showHideDice();
