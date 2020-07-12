@@ -95,15 +95,12 @@ pigGame.Main = function () {
             // Challenges 1: A player loses his entire score when he rolls two six in a row. Then, is the next player after that.
             if (dice0 === 6 || dice1 === 6) {
                 if (dice6Rolled) {
-                    roundScore = 0;
                     score[activePlayer] = 0;
-                    document.querySelector(`#current-${activePlayer}`).textContent = roundScore;
                     document.getElementById(`score-${activePlayer}`).innerText = score[activePlayer];
 
                     _nextPlayer();
                 }
-                else
-                    dice6Rolled = true;
+                dice6Rolled = true;
             }
             else
                 dice6Rolled = false;
