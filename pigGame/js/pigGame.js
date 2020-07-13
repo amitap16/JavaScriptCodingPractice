@@ -124,9 +124,12 @@ pigGame.Main = function () {
 
             // Update the UI
             document.getElementById(`score-${activePlayer}`).innerText = score[activePlayer];
+            
+            let winScore = parseInt(document.getElementById(_sctrlScore).value);
+            // Undefined, 0, null or "" are COERCED to false; Anything else is COERCED to true.
+            winScore = (winScore) ? winScore : 100;
 
             // Check if player won the match
-            const winScore = parseInt(document.getElementById(_sctrlScore).value);
             if (score[activePlayer] >= winScore) {
                 const activePlayerPanel = `.player-${activePlayer}-panel`;
 

@@ -137,6 +137,10 @@ input[type=number] {
     left: 54%;
 }
 
+    input[type=number]:focus {
+        outline: none;
+    }
+
 button {
     border: none;
     cursor: pointer;
