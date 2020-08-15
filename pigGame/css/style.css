@@ -217,4 +217,5 @@ i {
     color: red;
     width: 170px;
     left: 51%;
+    text-transform:capitalize
 }

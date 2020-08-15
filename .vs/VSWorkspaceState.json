@@ -1,8 +1,10 @@
 {
   "ExpandedNodes": [
     "",
-    "\\Note"
+    "\\Note",
+    "\\pigGame",
+    "\\pigGame\\css",
+    "\\pigGame\\js"
   ],
-  "SelectedNode": "\\Note\\ReadMe.txt",
   "PreviewInSolutionExplorer": false
 }
