@@ -211,3 +211,10 @@ i {
 .win-score {
     top: 20px;
 }
+
+.message {
+    top: 98px;
+    color: red;
+    width: 170px;
+    left: 51%;
+}

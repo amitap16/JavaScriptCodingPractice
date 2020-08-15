@@ -27,9 +27,10 @@ pigGame.Main = function () {
         _sctrlScore = 'winning-score',
         _sctrlClsDice0 = `.dice-${_sctrPostValue.Zero}`,
         _sctrlClsDice1 = `.dice-${_sctrPostValue.One}`,
+        _sctrlMessage = '.message',
         _clsWinner = 'winner',
         _clsActive = 'active';
-    let activePlayer, roundScore, score, gamePlaying, dice6Rolled;
+    let activePlayer, roundScore, score, gamePlaying, dice6Rolled, skipUpdateScore;
 
     const _showHideDice = function (dice = 0, sctrClsDice) {
         const diceDOM = document.querySelector(sctrClsDice);
@@ -43,12 +44,17 @@ pigGame.Main = function () {
         }
     };
 
+    const _setMessage = function (message) {
+        document.querySelector(_sctrlMessage).textContent = message;
+    };
+
     const _resetControls = function () {
         activePlayer = 0;
         roundScore = 0;
         score = [0, 0];
         gamePlaying = true;
         dice6Rolled = false;
+        skipUpdateScore = false;
 
         _showHideDice(0, _sctrlClsDice0);
         _showHideDice(0, _sctrlClsDice1);
@@ -83,6 +89,9 @@ pigGame.Main = function () {
     };
 
     const _onRollDiceClick = function () {
+        _setMessage('');
+        skipUpdateScore = false;
+
         if (gamePlaying) {
             // Random number
             const dice0 = Math.floor(Math.random() * 6) + 1;
@@ -97,22 +106,30 @@ pigGame.Main = function () {
                 if (dice6Rolled) {
                     score[activePlayer] = 0;
                     document.getElementById(`score-${activePlayer}`).innerText = score[activePlayer];
+                    _setMessage('rolled dice six in a row!!');
 
+                    // Next Player
                     _nextPlayer();
+                    skipUpdateScore = true;
                 }
-                dice6Rolled = true;
+                else
+                    dice6Rolled = true;
             }
             else
                 dice6Rolled = false;
 
-            // Update the score IF the rolled number is NOT a number 1
-            if (dice0 !== 1 && dice1 !== 1) {
-                roundScore += dice0 + dice1;
-                document.querySelector(`#current-${activePlayer}`).textContent = roundScore;
-            }
-            else {
-                // Next Player
-                _nextPlayer();
+            if (!skipUpdateScore) {
+                // Update the score IF the rolled number is NOT a number 1
+                if (dice0 !== 1 && dice1 !== 1) {
+                    roundScore += dice0 + dice1;
+                    document.querySelector(`#current-${activePlayer}`).textContent = roundScore;
+                }
+                else {
+                    _setMessage('Rolled dice one!');
+
+                    // Next Player
+                    _nextPlayer();
+                }
             }
         }
     };
@@ -124,7 +141,7 @@ pigGame.Main = function () {
 
             // Update the UI
             document.getElementById(`score-${activePlayer}`).innerText = score[activePlayer];
-            
+
             let winScore = parseInt(document.getElementById(_sctrlScore).value);
             // Undefined, 0, null or "" are COERCED to false; Anything else is COERCED to true.
             winScore = (winScore) ? winScore : 100;
