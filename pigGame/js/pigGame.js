@@ -12,7 +12,7 @@ Three Challenges:
     so they can change the predefined score of 100.
 3)  Add a second dice to the game and in this scenario, the player loses his current score when only one of them is an one.
 */
-pigGame.Main = function () {
+pigGame.main = (function () {
     'use strict';
 
     const _sctrPostValue = { Zero: 0, One: 1 };
@@ -106,7 +106,7 @@ pigGame.Main = function () {
                 if (dice6Rolled) {
                     score[activePlayer] = 0;
                     document.getElementById(`score-${activePlayer}`).innerText = score[activePlayer];
-                    _setMessage('rolled dice six in a row!!');
+                    _setMessage('dice six was rolled in a row!!!');
 
                     // Next Player
                     _nextPlayer();
@@ -125,7 +125,7 @@ pigGame.Main = function () {
                     document.querySelector(`#current-${activePlayer}`).textContent = roundScore;
                 }
                 else {
-                    _setMessage('Rolled dice one!');
+                    _setMessage('dice one was rolled!');
 
                     // Next Player
                     _nextPlayer();
@@ -178,4 +178,4 @@ pigGame.Main = function () {
     document.addEventListener('DOMContentLoaded', function () {
         _init();
     }, false);
-}();
+})();
