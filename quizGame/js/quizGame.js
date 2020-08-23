@@ -17,9 +17,22 @@ c) correct answer (I would use a number for this)
 6. Check if the answer is correct and print to the console whether the answer is correct ot nor (Hint: write another method for this).
 
 7. Suppose this code would be a plugin for other programmers to use in their code. So make sure that all your code is private and doesn't interfere with the other programmers code (Hint: we learned a special technique to do exactly that).
+
+--- Expert level ---
+
+8. After you display the result, display the next random question, so that the game never ends (Hint: write a function for this and call it right after displaying the result)
+
+9. Be careful: after Task 8, the game literally never ends. So include the option to quit the game if the user writes 'exit' instead of the answer. In this case, DON'T call the function from task 8.
+
+10. Track the user's score to make the game more fun! So each time an answer is correct, add 1 point to the score (Hint: I'm going to use the power of closures for this, but you don't have to, just do this with the tools you feel more comfortable at this point).
+
+11. Display the score in the console. Use yet another method for this.
 */
+
 quizGame.main = (function () {
     'use strict';
+
+    let score = 0;
 
     const Question = function (question, answers, correctAnswer) {
         this.question = question;
@@ -52,6 +65,8 @@ quizGame.main = (function () {
             ['1999', '2010', '1892', '1982'], 2)
         , new Question('Thomas Edison conducted thousands of experiments in order to invent what?',
             ['The microwave', 'The electric lightbulb', 'The parachute', 'The roller skate'], 1)
+        , new Question('Berlin is the capital of which country?',
+            ['Belgium', 'Netherlands', 'Germany', 'France'], 2)
     ];
 
     const _getAnswers = function (answers) {
@@ -69,12 +84,18 @@ quizGame.main = (function () {
         console.log(randomQ.question);
         _getAnswers(randomQ.answers);
 
-        let answer = parseInt(prompt("Please select the correct answer (just type the number)."));
-        if (answer != null)
-            console.log(answer === randomQ.correctAnswer ? 'Correct answer!' : 'Wrong answer. Try again :)');
+        let answer = prompt("Please select the correct answer (just type the number).");
+        if (answer !== 'exit') {
+            const isAnswerCorrect = parseInt(answer) === randomQ.correctAnswer;
+            score += isAnswerCorrect ? 1 : 0;
+            console.log(isAnswerCorrect ? 'Correct answer!' : 'Wrong answer. Try again :)');
+            console.log('Your current score is: ', score);
+            _getRandomQuestion();
+        }
     };
 
     document.addEventListener('DOMContentLoaded', function () {
+        score = 0;
         _getRandomQuestion();
     }, false);
 

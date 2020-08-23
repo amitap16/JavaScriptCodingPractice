@@ -1,10 +1,10 @@
 {
   "ExpandedNodes": [
     "",
-    "\\Note",
-    "\\pigGame\\css",
-    "\\pigGame\\js"
+    "\\pigGame",
+    "\\pigGame\\js",
+    "\\quizGame",
+    "\\quizGame\\js"
   ],
-  "SelectedNode": "\\pigGame",
   "PreviewInSolutionExplorer": false
 }
