@@ -40,6 +40,19 @@ quizGame.main = (function () {
         this.correctAnswer = correctAnswer;
     }
 
+    Question.prototype.displayQuestion = function () {
+        console.log(this.question);
+        if (Array.isArray(this.answers)) {
+            for (let i = 0; i < this.answers.length; i++) {
+                console.log(i + ': ' + this.answers[i]);
+            }
+        }
+    };
+
+    Question.prototype.checkAnswer = function (answer) {
+        return parseInt(answer) === this.correctAnswer;
+    };
+
     const _quizQuestions = [
         new Question('Which Italian city has a leaning tower?',
             ['Milan', 'Pisa', 'Rome', 'Turin'], 1)
@@ -69,37 +82,26 @@ quizGame.main = (function () {
             ['Belgium', 'Netherlands', 'Germany', 'France'], 2)
     ];
 
-    const _getAnswers = function (answers) {
-        if (Array.isArray(answers)) {
-            for (let i = 0; i < answers.length; i++) {
-                console.log(i + ': ' + answers[i]);
-            }
-        }
-    };
-
-    const _getRandomQuestion = function () {
-        const index = Math.floor(Math.random() * 11);
-        const randomQ = _quizQuestions[index];
-
-        console.log(randomQ.question);
-        _getAnswers(randomQ.answers);
+    const _nextQuestion = function () {
+        const index = Math.floor(Math.random() * _quizQuestions.length);
+        _quizQuestions[index].displayQuestion();
 
         let answer = prompt("Please select the correct answer (just type the number).");
         if (answer !== 'exit') {
-            const isAnswerCorrect = parseInt(answer) === randomQ.correctAnswer;
+            const isAnswerCorrect = _quizQuestions[index].checkAnswer(answer);
             score += isAnswerCorrect ? 1 : 0;
             console.log(isAnswerCorrect ? 'Correct answer!' : 'Wrong answer. Try again :)');
             console.log('Your current score is: ', score);
-            _getRandomQuestion();
+            _nextQuestion();
         }
     };
 
     document.addEventListener('DOMContentLoaded', function () {
         score = 0;
-        _getRandomQuestion();
+        _nextQuestion();
     }, false);
 
-    //return {
+    //return {       
     //    getRandomQuestion: _getRandomQuestion
     //}
 })();
