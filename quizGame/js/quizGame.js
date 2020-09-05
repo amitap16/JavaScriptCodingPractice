@@ -55,7 +55,7 @@ quizGame.main = (function () {
 
     Question.prototype.displayScore = function (score) {
         console.log('Your current score is: ', score);
-        console.log('----------------------------------');
+        console.log('--------------------------------------------------------------------');
     };
 
     const _quizQuestions = [
@@ -110,7 +110,6 @@ quizGame.main = (function () {
     };
 
     document.addEventListener('DOMContentLoaded', function () {
-        _score();
         _nextQuestion();
     }, false);
 
