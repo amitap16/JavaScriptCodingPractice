@@ -32,8 +32,6 @@ c) correct answer (I would use a number for this)
 quizGame.main = (function () {
     'use strict';
 
-    let score = 0;
-
     const Question = function (question, answers, correctAnswer) {
         this.question = question;
         this.answers = answers;
@@ -49,8 +47,15 @@ quizGame.main = (function () {
         }
     };
 
-    Question.prototype.checkAnswer = function (answer) {
-        return parseInt(answer) === this.correctAnswer;
+    Question.prototype.checkAnswer = function (answer, callback) {
+        const isAnswerCorrect = parseInt(answer) === this.correctAnswer;
+        console.log(isAnswerCorrect ? 'Correct answer!' : 'Wrong answer. Try again :)');
+        this.displayScore(callback(isAnswerCorrect));
+    };
+
+    Question.prototype.displayScore = function (score) {
+        console.log('Your current score is: ', score);
+        console.log('----------------------------------');
     };
 
     const _quizQuestions = [
@@ -82,22 +87,30 @@ quizGame.main = (function () {
             ['Belgium', 'Netherlands', 'Germany', 'France'], 2)
     ];
 
+    const _score = function () {
+        let score = 0;
+
+        return function (correct) {
+            score += correct ? 1 : 0;
+            return score;
+        }
+    };
+
+    const _keepScore = _score();
+
     const _nextQuestion = function () {
         const index = Math.floor(Math.random() * _quizQuestions.length);
         _quizQuestions[index].displayQuestion();
 
         let answer = prompt("Please select the correct answer (just type the number).");
         if (answer !== 'exit') {
-            const isAnswerCorrect = _quizQuestions[index].checkAnswer(answer);
-            score += isAnswerCorrect ? 1 : 0;
-            console.log(isAnswerCorrect ? 'Correct answer!' : 'Wrong answer. Try again :)');
-            console.log('Your current score is: ', score);
+            _quizQuestions[index].checkAnswer(answer, _keepScore);
             _nextQuestion();
         }
     };
 
     document.addEventListener('DOMContentLoaded', function () {
-        score = 0;
+        _score();
         _nextQuestion();
     }, false);
 
